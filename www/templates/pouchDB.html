@@ -1,0 +1,37 @@
+<ion-view view-title="Login">
+  <ion-pane>
+
+    <ion-content class="padding center" ng-controller='pouchdbCtrl'>
+
+            <div class="list list-inset">
+        <label class="item item-input place">
+
+          <input type="text" id="uuid" name="uuid" placeholder="UUID" ng-model="name.uuid">
+        </label>
+        <label class="item item-input">
+
+          <input type="text" id="major" placeholder="Major" ng-model="name.major">
+        </label>
+        <label class="item item-input place">
+
+          <input type="text" id="minor" name="minor" placeholder="Minor" ng-model="name.minor">
+        </label>
+        <label class="item item-input">
+
+          <input type="text" id="storeid" placeholder="Store_ID" ng-model="name.storeid">
+        </label>
+        <label class="item item-input place">
+
+          <input type="text" id="sectionid" name="sectionid" placeholder="Section_ID" ng-model="name.sectionid">
+        </label>
+        <label class="item item-input">
+
+          <input type="text" id="url" placeholder="URL" ng-model="name.url">
+        </label>
+      </div>
+      <button class="button button-block button-positive" id="idButton" ng-click="Insert(name)">
+      <b>  save</b>
+      </button>
+      </ion-content>
+  </ion-pane>
+</ion-view>

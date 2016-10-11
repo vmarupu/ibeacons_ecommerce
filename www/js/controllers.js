@@ -1,0 +1,248 @@
+var ex = angular.module('starter.controllers', [])
+var db = new PouchDB("beacon");
+ex.controller('IntroCtrl', function($scope, $state, $ionicSlideBoxDelegate, $location, $rootScope) {
+
+  // Lets create a function
+  // That will go to state main
+  $scope.startApp = function() {
+
+    $location.path('/login').replace();
+
+    window.localStorage.didTutorial = 'true';
+  };
+
+  // At the start of this controller
+  // Lets check local storage for didTutorial
+  if (window.localStorage.didTutorial === 'true') {
+    // If it we did do the tutorial, lets call
+    // $scope.startApp
+    $scope.startApp();
+  } else {}
+
+  $scope.next = function() {
+    $ionicSlideBoxDelegate.next();
+  };
+  $scope.previous = function() {
+    $ionicSlideBoxDelegate.previous();
+  };
+
+  // Called each time the slide changes
+  $scope.slideChanged = function(index) {
+    $scope.slideIndex = index;
+  };
+})
+
+
+
+ex.controller('AppCtrl', function($scope, $ionicModal, $timeout, $rootScope, $ionicPlatform, $cordovaBeacon, $http, $location, $ionicPopup) {
+  $scope.check = function() {
+    $location.path('app/search');
+    $scope.enableBT = function() {
+      cordova.plugins.locationManager.isBluetoothEnabled()
+        .then(function(isEnabled) {
+          //alert("bluetooth>>"+isEnabled);
+          console.log("isEnabled: " + isEnabled);
+          if (isEnabled) {
+            //cordova.plugins.locationManager.disableBluetooth();
+            $location.path('app/search');
+          } else {
+            $location.path('app/search');
+            var confirmPopup = $ionicPopup.confirm({
+              title: 'Turn on bluetooth first',
+              template: 'Are you sure you want to turn on bluetooth?'
+            });
+            confirmPopup.then(function(res) {
+              if (res) {
+                cordova.plugins.locationManager.enableBluetooth();
+              } else {
+                //Write app close functionality
+              }
+            });
+          }
+        }).fail(function(e) {
+          console.error(e);
+        }).done();
+    }
+  };
+})
+
+ex.controller("ExampleController", function($scope, $rootScope, $ionicPlatform, $cordovaBeacon, $http, $cordovaLocalNotification, localNotificationService) {
+  $scope.beacons = {};
+  var mArray = new Array();
+  mArray[0] = '';
+  var flag = 'ok';
+  $ionicPlatform.ready(function() {
+
+    $rootScope.$on("$cordovaBeacon:didRangeBeaconsInRegion", function(event, pluginResult) {
+      var uniqueBeaconKey;
+      var proxy = "ProximityNear";
+      for (var i = 0; i < pluginResult.beacons.length; i++) {
+        uniqueBeaconKey = pluginResult.beacons[i].uuid + ":" + pluginResult.beacons[i].major + ":" + pluginResult.beacons[i].minor;
+        $scope.beacons[uniqueBeaconKey] = pluginResult.beacons[i];
+
+        if (mArray[0] === '') {
+          //alert("mArray length>0 and flag>>"+flag);
+          mArray[0] = pluginResult.beacons[i].major;
+          //flag='no';
+        } else if (mArray[0] === pluginResult.beacons[i].major) {
+          //mArray[0]=pluginResult.beacons[i].major;
+          flag = 'no';
+          //alert("mArray[0]=major and flag>>"+flag);
+        } else {
+          mArray[0] = pluginResult.beacons[i].major;
+          flag = 'ok';
+        }
+        if (flag === 'ok') {
+        //  alert("hi");
+
+          db.get(pluginResult.beacons[i].major).then(function(data) {
+            //      alert(data);
+            //    alert(JSON.stringify(data));
+            $scope.section_id = data.sectionid;
+            //alert($scope.section_id);
+            /*    db.allDocs({
+                  include_docs: true
+                }).then(function(result) {
+                  alert(JSON.stringify(result));
+                  for (var i = 0; i < result.rows.length; i++) {
+
+                    var majorid = result.rows[i].doc.major;
+                    var minorid = result.rows[i].doc.minor;
+                    alert(majorid + " " + pluginResult.beacons[i].major);
+                    if (majorid == pluginResult.beacons[i].major) {
+                      alert(pluginResult.beacons[i].major + "\t" + pluginResult.beacons[i].minor);*/
+            var ltitle = "Beacons";
+
+            $http.get("http://192.168.1.209/wcs/resources/store/10451/productview/byCategory/" + $scope.section_id)
+              .then(function(response) {
+                //$rootScope.responseData = response.data.associatedPromotions[0];
+                $rootScope.responseData = response.data;
+              //  alert($rootScope.responseData.CatalogEntryView[0].shortDescription);
+              //  alert($rootScope.responseData.CatalogEntryView[0].fullImage);
+                //  	$rootScope.responseDescription=response.data.CatalogEntryView[0].shortDescription;
+                //alert($rootScope.responseData);
+                localNotificationService.scheduleSingleNotification(ltitle);
+              })
+              /*  })
+              }*/
+          })
+        }
+      }
+      $scope.$apply();
+    });
+    $cordovaBeacon.startRangingBeaconsInRegion($cordovaBeacon.createBeaconRegion("estimote", "b9407f30-f5f8-466e-aff9-25556b57fe6d"));
+  });
+})
+
+ex.controller('logoutCtrl', function($scope, $location) {
+  $scope.logout = function() {
+
+    $location.path('/login');
+  }
+})
+ex.controller('loginCtrl', function($scope, $location, $http, $ionicPopup, backcallFactory) {
+  backcallFactory.backcallfun();
+  $scope.userlogin = function(authorization) {
+    $scope.user = authorization.username;
+    $scope.pswd = authorization.password;
+
+  //  alert($scope.user);
+    //alert("login called");
+    $http.post("https://login.salesforce.com/services/oauth2/token?client_id=3MVG9ZL0ppGP5UrBJaFyni5._ZxU7HHY81xwT6bj1d4agZ.JmRIRuBN.pY0g9B10n131eXwLviQufua8qG2Nc&client_secret=7190663636670339387&username=basha37@miraclesoft.com&password=7842543784Ch@nE6fnWoMmQep6XPdMyIlKZzLj&grant_type=password").then(function(response) {
+
+      switch (response.status) {
+        case 200:
+          access = response.data.access_token;
+          break;
+        case 400:
+          // Tell them they are missing data
+          break;
+        case 401:
+          // Tell them the creds are incorrect
+          break;
+        case 500:
+          // Tell them the server had a problem
+          break;
+      }
+      if (response.status == 200) {
+        access = response.data.access_token;
+
+        $location.path('app/profile');
+
+
+        console.log(JSON.stringify(response.data.access_token));
+        console.log(response.data);
+      } else {
+        // invalid response
+
+        console.log("error:" + response.data);
+      }
+    }, function(error) {
+      $ionicPopup.confirm({
+        title: "Miracle ME alerts you",
+        content: "Invalid username and password."
+      })
+      console.log('We have an error' + JSON.stringify(error));
+    });
+  }
+})
+
+ex.controller('DetailsCtrl', function($scope, $rootScope, $http) {
+  $scope.getDetails = function() {
+    $rootScope.token = access;
+//    alert(JSON.stringify($rootScope.token) + "access" + access);
+    var config = {
+      headers: {
+        'Authorization': 'Bearer ' + $rootScope.token
+      }
+    }
+    $http.get("https://ap2.salesforce.com/services/apexrest/details/skbasha467@gmail.com", config)
+      .then(function(success) {
+        $scope.firstname = "FirstName: " + success.data.customer.firstname;
+        $scope.lastname = "LastName: " + success.data.customer.lastname;
+        //  alert(JSON.stringify($scope.firstname));
+      })
+  }
+})
+
+
+ex.controller('recentordersCtrl', function($scope, $location,$http,$rootScope) {
+$scope.getFullData=function(){
+  //document.getElementById("productInfo").style.display="block";
+  $http.get("http://192.168.1.209/wcs/resources/store/10451/productview/byCategory/10008")
+    .then(function(response) {
+      $rootScope.responseData = response.data;
+      alert($rootScope.responseData.CatalogEntryView[0].fullImage);
+    })
+}
+})
+
+ex.controller('pouchdbCtrl', function($scope, $location) {
+  $scope.Insert = function(name) {
+    var data = {
+      "_id": name.major,
+      "uuid": name.uuid,
+      "major": name.major,
+      "minor": name.minor,
+      "storeid": name.storeid,
+      "sectionid": name.sectionid,
+      "url": name.url
+    }
+    db.post(data);
+    $location.path('app/search');
+  }
+});
+ex.factory('backcallFactory', ['$state', '$ionicPlatform', '$ionicHistory', '$timeout', function($state, $ionicPlatform, $ionicHistory, $timeout) {
+
+  var obj = {}
+  obj.backcallfun = function() {
+      $ionicPlatform.registerBackButtonAction(function(event) {
+        if ($state.current.name == "login") {
+          navigator.app.exitApp(); //<-- remove this line to disable the exit
+        } else {
+          navigator.app.backHistory();
+        }
+      }, 100);
+    } //backcallfun
+  return obj;
+}]);
