@@ -1,45 +1,46 @@
 <ion-view view-title="Recent Orders">
-
+<!--We can see what are the recent orders are available here-->
   <ion-nav-buttons side="right">
     <button class="button button-positive button-clear   icon ion-android-cart"></button>
   </ion-nav-buttons>
 
   <ion-content class="padding " ng-controller="recentordersCtrl">
-
-    <!--  <div ng-repeat="" >-->
-
+<!--Display the images-->
     <div class="row">
       <div class="col text-center">
         <h1>Recent Orders</h1> Write your recent orders code
         <img ng-src="http://192.168.1.209/wcsstore/null/images/catalog/blue1.jpg" style="width:200px;height:200px;margin:auto;display:block" />
       </div>
     </div>
+
     <div class="row">
       <div class="col text-center">
         <button class="button button-positive">Add To Cart</button>
       </div>
     </div>
+
     <div class="row">
       <div class="col text-center">
         <button class="button button-block button-positive" ng-click="getFullData()">More Search</button>
       </div>
     </div>
+
     <div id="productInfo" ng-repeat="Products in responseData.CatalogEntryView">
 
-        <div class="row">
-          <div class="col text-center">
-
-            <h1>Recent Orders</h1> Write your recent orders code
-            <img ng-src="http://192.168.1.209/{{Products.fullImage.replace('FLOR_ExtendedSitesCatalogAssetStore', 'null')}}" alt="Problem with server" style="width:200px;height:200px;margin:auto;display:block" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col text-center">
-            <button class="button button-positive">Add To Cart</button>
-          </div>
+      <div class="row">
+        <div class="col text-center">
+          <h1>Recent Orders</h1> Write your recent orders code
+          <img ng-src="http://192.168.1.209/{{Products.fullImage.replace('FLOR_ExtendedSitesCatalogAssetStore', 'null')}}" alt="Problem with server" style="width:200px;height:200px;margin:auto;display:block" />
         </div>
       </div>
-  
-  </ion-content>
 
+      <div class="row">
+        <div class="col text-center">
+          <button class="button button-positive">Add To Cart</button>
+        </div>
+      </div>
+
+    </div>
+
+  </ion-content>
 </ion-view>

@@ -1,5 +1,6 @@
 <ion-view view-title="Beacons Home" >
-  <ion-content class="padding" ng-controller='ExampleController'>
+  <!--Enable the bluetooth and detect the beacons-->
+  <ion-content class="padding" ng-controller='searchCtrl'>
     <button class="button button-block button-positive" ng-click="enableBT()">Enable Bluetooth</button>
     <p>Turn on Bluetooth if not turned on</p>
     <div class="list" id="detailsDiv" style="display:block;">
@@ -24,6 +25,6 @@
         </div>
       </div>
     </div>
-  
+
   </ion-content>
 </ion-view>

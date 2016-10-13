@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic','ngCordovaBeacon','ngCordova','starter.controllers','starter.services'])
+angular.module('starter', ['ionic', 'ngCordovaBeacon', 'ngCordova', 'starter.controllers', 'starter.services'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -13,7 +13,6 @@ angular.module('starter', ['ionic','ngCordovaBeacon','ngCordova','starter.contro
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);
-
     }
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
@@ -21,23 +20,23 @@ angular.module('starter', ['ionic','ngCordovaBeacon','ngCordova','starter.contro
     }
   });
 })
-
+//Mention the states and controllers
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
 
-  .state('intro', {
-      url: '/intro',
-      templateUrl: 'templates/intro.html',
-      controller: 'IntroCtrl'
-    })
+    .state('intro', {
+    url: '/intro',
+    templateUrl: 'templates/intro.html',
+    controller: 'IntroCtrl'
+  })
 
   .state('login', {
-      url: '/login',
-      templateUrl: 'templates/login.html',
-      controller: 'loginCtrl'
-    })
+    url: '/login',
+    templateUrl: 'templates/login.html',
+    controller: 'loginCtrl'
+  })
 
-    .state('app', {
+  .state('app', {
     url: '/app',
     abstract: true,
     templateUrl: 'templates/menu.html',
@@ -49,49 +48,49 @@ angular.module('starter', ['ionic','ngCordovaBeacon','ngCordova','starter.contro
     views: {
       'menuContent': {
         templateUrl: 'templates/search.html',
-        controller:'ExampleController'
+        controller: 'searchCtrl'
       }
     }
   })
 
-
-
   .state('app.afterNotif', {
-      url: '/afterNotif',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/afterNotif.html'
-        }
+    url: '/afterNotif',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/afterNotif.html'
       }
-    })
+    }
+  })
 
-    .state('app.profile', {
+  .state('app.profile', {
       url: '/profile',
       views: {
         'menuContent': {
           templateUrl: 'templates/profile.html',
-            controller: 'DetailsCtrl'
+          controller: 'profileCtrl'
         }
       }
     })
+
     .state('app.recentorders', {
       url: '/recentorders',
       views: {
         'menuContent': {
           templateUrl: 'templates/recentOrders.html',
-           controller: 'recentordersCtrl'
+          controller: 'recentordersCtrl'
         }
       }
     })
+
     .state('app.pouchDB', {
-        url: '/pouchDB',
-        views: {
-          'menuContent': {
-            templateUrl: 'templates/pouchDB.html',
-            controller:'pouchdbCtrl'
-          }
+      url: '/pouchDB',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/pouchDB.html',
+          controller: 'pouchdbCtrl'
         }
-      });
+      }
+    });
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/intro');

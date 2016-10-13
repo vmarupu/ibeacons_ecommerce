@@ -1,10 +1,12 @@
 <ion-view view-title="Profile">
-
-
-<ion-content class="padding" ng-controller="DetailsCtrl">
-
-<center><div>  <button class="button button-positive" ng-click="getDetails()" >GetDetails</button></div>
-<div> {{firstname}}</div>
-<div> {{lastname}}</div></center>
-</ion-content>
+  <!--Get the profile details-->
+  <ion-content class="padding" ng-controller="profileCtrl">
+    <center>
+      <div>
+        <button class="button button-positive" ng-click="getDetails()">GetDetails</button>
+      </div>
+      <div> {{firstname}}</div>
+      <div> {{lastname}}</div>
+    </center>
+  </ion-content>
 </ion-view>
