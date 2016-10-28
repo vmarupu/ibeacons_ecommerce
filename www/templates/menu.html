@@ -3,7 +3,7 @@
     <ion-nav-bar class="bar-stable">
       <ion-nav-back-button>
       </ion-nav-back-button>
-<!--Navigation button-->
+      <!--Navigation button-->
       <ion-nav-buttons side="left">
         <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
         </button>
@@ -11,21 +11,25 @@
     </ion-nav-bar>
     <ion-nav-view name="menuContent"></ion-nav-view>
   </ion-side-menu-content>
-
   <ion-side-menu side="left" class="custom">
-      <ion-header-bar class="bar-profile">
+
+    <ion-header-bar class="bar-profile">
 
       <div class="profile" menu-close id="idProfile" href="#/app/profile" style="display:block">
-        <img class="profile-picture" src="http://ionicframework.com/img/docs/mcfly.jpg"/>
+        <img class="profile-picture" src="http://ionicframework.com/img/docs/mcfly.jpg" />
         <h3 class="name">Thronester</h3>
       </div>
 
     </ion-header-bar>
+
     <ion-content>
       <!--  <ion-item menu-close id="idProfile" href="#/app/profile" style="display:block">
         </ion-item>-->
-        <!--Here is the list which are added in side menu-->
+      <!--Here is the list which are added in side menu-->
       <ion-list>
+        <ion-item menu-close id="idProfile" href="#/app/profile" style="display:block">
+             <i class="icon ion-ios-person padding"></i> Profile
+           </ion-item>
         <ion-item menu-close id="idRecentOrders" href="#/app/recentorders" style="display:block">
           <i class="icon ion-android-cart padding"></i> Recent Orders
         </ion-item>
@@ -41,5 +45,6 @@
 
       </ion-list>
     </ion-content>
+
   </ion-side-menu>
 </ion-side-menus>

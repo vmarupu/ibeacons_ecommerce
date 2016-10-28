@@ -57,13 +57,17 @@ angular.module('starter', ['ionic', 'ngCordovaBeacon', 'ngCordova', 'starter.con
     url: '/afterNotif',
     views: {
       'menuContent': {
-        templateUrl: 'templates/afterNotif.html'
+        templateUrl: 'templates/afterNotif.html',
+          controller: 'afterNotifCtrl'
       }
     }
   })
 
   .state('app.profile', {
       url: '/profile',
+      params: {
+           param1: null
+       },
       views: {
         'menuContent': {
           templateUrl: 'templates/profile.html',

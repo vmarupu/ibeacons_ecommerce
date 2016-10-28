@@ -87,20 +87,19 @@ app1.controller("searchCtrl", function($scope, $rootScope, $ionicPlatform, $cord
           flag = 'ok';
         }
         if (flag === 'ok') {
+        //  alert(pluginResult.beacons.length);
+
           db.get(pluginResult.beacons[i].major).then(function(data) {
-            $scope.section_id = data.sectionid;
-            var ltitle = "Beacons";
+            $rootScope.section_id = data.sectionid;
+            var ltitle = pluginResult.beacons.length;
 
             $http.get("http://192.168.1.209/wcs/resources/store/10451/productview/byCategory/" + $scope.section_id)
               .then(function(response) {
                 //$rootScope.responseData = response.data.associatedPromotions[0];
                 $rootScope.responseData = response.data;
-                //  alert($rootScope.responseData.CatalogEntryView[0].shortDescription);
-                //  alert($rootScope.responseData.CatalogEntryView[0].fullImage);
-                //  	$rootScope.responseDescription=response.data.CatalogEntryView[0].shortDescription;
-                //alert($rootScope.responseData);
+
                 localNotificationService.scheduleSingleNotification(ltitle);
-              })
+            })
           })
         }
       }
@@ -116,7 +115,7 @@ app1.controller('logoutCtrl', function($scope, $location) {
     }
   })
   //Login controller
-app1.controller('loginCtrl', function($scope, $location, $http, $ionicPopup, backcallFactory) {
+app1.controller('loginCtrl', function($scope,$state, $location, $http, $ionicPopup, backcallFactory) {
     backcallFactory.backcallfun();
     //Authenticate the user through the salesforce URL
     $scope.userlogin = function(authorization) {
@@ -141,7 +140,7 @@ app1.controller('loginCtrl', function($scope, $location, $http, $ionicPopup, bac
         if (response.status == 200) {
           access = response.data.access_token;
 
-          $location.path('app/profile');
+          $state.go('app.profile',{param1:{id:1,"name":"abc"}},{reload: true, notify:true});
           console.log(JSON.stringify(response.data.access_token));
           console.log(response.data);
         } else {
@@ -158,8 +157,11 @@ app1.controller('loginCtrl', function($scope, $location, $http, $ionicPopup, bac
     }
   })
   //Profile controller
-app1.controller('profileCtrl', function($scope, $rootScope, $http) {
+app1.controller('profileCtrl', function($scope, $rootScope, $http,$stateParams) {
     $scope.getDetails = function() {
+    //alert($stateParams.param1.id);
+$scope.data=$stateParams.param1;
+alert($scope.data.id+" contact"+$scope.data.name);
       $rootScope.token = access;
       var config = {
         headers: {
@@ -179,10 +181,15 @@ app1.controller('recentordersCtrl', function($scope, $location, $http, $rootScop
       $http.get("http://192.168.1.209/wcs/resources/store/10451/productview/byCategory/10008")
         .then(function(response) {
           $rootScope.responseData = response.data;
-          alert($rootScope.responseData.CatalogEntryView[0].fullImage);
+        //  alert($rootScope.responseData.CatalogEntryView[0].fullImage);
         })
     }
   })
+  //Notification data displays in AfterNotif page
+  app1.controller('afterNotifCtrl', function($scope, $location) {
+
+  });
+
   //PouchDB controller, insert the data in JSON format
 app1.controller('pouchdbCtrl', function($scope, $location) {
   $scope.Insert = function(name) {
